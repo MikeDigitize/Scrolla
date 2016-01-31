@@ -2,8 +2,8 @@ var path = require("path");
 module.exports = {
     context : path.resolve("src"),
     entry : {
-        "scrolla-build" : "js/scrolla-src.js",
-        "scrolla-test-build" : "js/scrolla-test.js"
+        "scrolla-demo" : "js/scrolla-demo.js",
+        "scrolla-test-suite" : "js/scrolla-test-suite.js"
     },
     resolve: {
         root: path.resolve(__dirname + "/src"),

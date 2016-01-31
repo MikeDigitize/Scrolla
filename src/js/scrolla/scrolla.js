@@ -1,4 +1,4 @@
-import { findPosition } from "./position";
+import { getPosition } from "./get-position";
 import { windowScroll } from "./scrollTo";
 
 export function Scrolla(scrollAmount = 20) {
@@ -8,7 +8,7 @@ export function Scrolla(scrollAmount = 20) {
     }
 
     return function scrolling(selector, updateScrollAmount = scrollAmount) {
-        let yStop = findPosition(selector).top;
+        let yStop = getPosition(selector).top;
         let yStart = window.pageYOffset;
         scrollAmount = getScrollAmount(updateScrollAmount, yStart, yStop);
         windowScroll({ yStart, yStop, scrollAmount });
