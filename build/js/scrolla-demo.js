@@ -67,22 +67,22 @@
 
 	var _getPosition = __webpack_require__(2);
 
-	var _scrollTo = __webpack_require__(3);
+	var _windowScroll = __webpack_require__(7);
 
 	function Scrolla() {
-	    var scrollAmount = arguments.length <= 0 || arguments[0] === undefined ? 20 : arguments[0];
+	    var scrollAmount = arguments.length <= 0 || arguments[0] === undefined ? 10 : arguments[0];
 
 	    function getScrollAmount(_scrollAmount, yStart, yStop) {
 	        return yStop > yStart ? -Math.abs(_scrollAmount) : +Math.abs(_scrollAmount);
 	    }
 
-	    return function scrolling(selector) {
+	    return function scroll(selector) {
 	        var updateScrollAmount = arguments.length <= 1 || arguments[1] === undefined ? scrollAmount : arguments[1];
 
 	        var yStop = (0, _getPosition.getPosition)(selector).top;
 	        var yStart = window.pageYOffset;
 	        scrollAmount = getScrollAmount(updateScrollAmount, yStart, yStop);
-	        (0, _scrollTo.windowScroll)({ yStart: yStart, yStop: yStop, scrollAmount: scrollAmount });
+	        (0, _windowScroll.windowScroll)({ yStart: yStart, yStop: yStop, scrollAmount: scrollAmount });
 	    };
 	}
 
@@ -105,7 +105,11 @@
 	}
 
 /***/ },
-/* 3 */
+/* 3 */,
+/* 4 */,
+/* 5 */,
+/* 6 */,
+/* 7 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -127,7 +131,7 @@
 	        if (scrollAmount > 0 && yStart <= yStop || scrollAmount < 0 && yStart >= yStop) {
 	            clearInterval(timer);
 	        } else {
-	            scrollHere(yStart, scrollAmount, yStop);
+	            requestAnimationFrame(scrollHere);
 	        }
 	    }, 5);
 	}

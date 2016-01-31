@@ -9,7 +9,7 @@ export function windowScroll(data) {
             clearInterval(timer);
         }
         else {
-            scrollHere(yStart, scrollAmount, yStop);
+            requestAnimationFrame(scrollHere);
         }
     }, 5);
 }

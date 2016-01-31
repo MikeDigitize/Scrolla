@@ -46,54 +46,12 @@
 
 	"use strict";
 
-	var _scrolla = __webpack_require__(1);
-
 	var _getPositionTest = __webpack_require__(4);
-
-	describe("Scrolla", function () {
-	    it("Say hi", function () {
-	        expect(true).toBe(true);
-	    });
-	    it("Say bye", function () {
-	        expect(true).toBe(true);
-	    });
-	});
 
 	(0, _getPositionTest.getPositionTests)();
 
 /***/ },
-/* 1 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.Scrolla = Scrolla;
-
-	var _getPosition = __webpack_require__(2);
-
-	var _scrollTo = __webpack_require__(3);
-
-	function Scrolla() {
-	    var scrollAmount = arguments.length <= 0 || arguments[0] === undefined ? 20 : arguments[0];
-
-	    function getScrollAmount(_scrollAmount, yStart, yStop) {
-	        return yStop > yStart ? -Math.abs(_scrollAmount) : +Math.abs(_scrollAmount);
-	    }
-
-	    return function scrolling(selector) {
-	        var updateScrollAmount = arguments.length <= 1 || arguments[1] === undefined ? scrollAmount : arguments[1];
-
-	        var yStop = (0, _getPosition.getPosition)(selector).top;
-	        var yStart = window.pageYOffset;
-	        scrollAmount = getScrollAmount(updateScrollAmount, yStart, yStop);
-	        (0, _scrollTo.windowScroll)({ yStart: yStart, yStop: yStop, scrollAmount: scrollAmount });
-	    };
-	}
-
-/***/ },
+/* 1 */,
 /* 2 */
 /***/ function(module, exports) {
 
@@ -112,34 +70,7 @@
 	}
 
 /***/ },
-/* 3 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.windowScroll = windowScroll;
-	function windowScroll(data) {
-	    function scrollHere() {
-	        yStart -= scrollAmount;
-	        window.scrollTo(0, yStart);
-	    }
-	    var yStart = data.yStart;
-	    var yStop = data.yStop;
-	    var scrollAmount = data.scrollAmount;
-
-	    var timer = setInterval(function () {
-	        if (scrollAmount > 0 && yStart <= yStop || scrollAmount < 0 && yStart >= yStop) {
-	            clearInterval(timer);
-	        } else {
-	            scrollHere(yStart, scrollAmount, yStop);
-	        }
-	    }, 5);
-	}
-
-/***/ },
+/* 3 */,
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -152,18 +83,120 @@
 
 	var _getPosition = __webpack_require__(2);
 
+	var _testUtils = __webpack_require__(5);
+
 	function getPositionTests() {
-	    var el;
 
-	    describe("Get Pos", function () {
+	    describe("Get Position function tests", function () {
 
-	        beforeEach(function () {
-	            el = document.createElement("div");
+	        var testElement1, testElement2, testElement3;
+
+	        describe("Un-nested element positions return correctly", function () {
+	            beforeEach(function () {
+	                testElement1 = (0, _testUtils.createTestElement)();
+	            });
+	            it("Element Y position is returned correctly", function () {
+	                (0, _testUtils.insertElement)(testElement1, "300px");
+	                expect((0, _getPosition.getPosition)(testElement1).top).toBe(300);
+	            });
+	            it("Element X position is returned correctly", function () {
+	                (0, _testUtils.insertElement)(testElement1, 0, "400px");
+	                expect((0, _getPosition.getPosition)(testElement1).left).toBe(400);
+	            });
+	            afterEach(function () {
+	                (0, _testUtils.removeElement)(testElement1);
+	            });
 	        });
-	        it("el is an el", function () {
-	            expect(el instanceof HTMLElement).toBe(true);
+
+	        describe("Nested element positions return correctly", function () {
+	            beforeEach(function () {
+	                testElement1 = (0, _testUtils.createTestElement)("500px", "1500px");
+	                testElement2 = (0, _testUtils.createTestElement)();
+	            });
+	            it("Element Y position is returned correctly", function () {
+	                (0, _testUtils.insertElement)(testElement1, "300px");
+	                (0, _testUtils.insertElement)(testElement2, "500px", 0, testElement1);
+	                expect((0, _getPosition.getPosition)(testElement1).top).toBe(300);
+	                expect((0, _getPosition.getPosition)(testElement2).top).toBe(800);
+	            });
+	            it("Element X position is returned correctly", function () {
+	                (0, _testUtils.insertElement)(testElement1, 0, "300px");
+	                (0, _testUtils.insertElement)(testElement2, 0, "500px", testElement1);
+	                expect((0, _getPosition.getPosition)(testElement1).left).toBe(300);
+	                expect((0, _getPosition.getPosition)(testElement2).left).toBe(800);
+	            });
+	            afterEach(function () {
+	                (0, _testUtils.removeElement)(testElement1);
+	                (0, _testUtils.removeElement)(testElement2);
+	            });
+	        });
+
+	        describe("Deep nested element positions return correctly", function () {
+	            beforeEach(function () {
+	                testElement1 = (0, _testUtils.createTestElement)("1000px", "2500px");
+	                testElement2 = (0, _testUtils.createTestElement)("750px", "1500px");
+	                testElement3 = (0, _testUtils.createTestElement)();
+	            });
+	            it("Element Y position is returned correctly", function () {
+	                (0, _testUtils.insertElement)(testElement1, "100px");
+	                (0, _testUtils.insertElement)(testElement2, "800px", 0, testElement1);
+	                (0, _testUtils.insertElement)(testElement3, "800px", 0, testElement2);
+	                expect((0, _getPosition.getPosition)(testElement1).top).toBe(100);
+	                expect((0, _getPosition.getPosition)(testElement2).top).toBe(900);
+	                expect((0, _getPosition.getPosition)(testElement3).top).toBe(1700);
+	            });
+	            it("Element X position is returned correctly", function () {
+	                (0, _testUtils.insertElement)(testElement1, 0, "100px");
+	                (0, _testUtils.insertElement)(testElement2, 0, "300px", testElement1);
+	                (0, _testUtils.insertElement)(testElement3, 0, "400px", testElement2);
+	                expect((0, _getPosition.getPosition)(testElement1).left).toBe(100);
+	                expect((0, _getPosition.getPosition)(testElement2).left).toBe(400);
+	                expect((0, _getPosition.getPosition)(testElement3).left).toBe(800);
+	            });
+	            afterEach(function () {
+	                (0, _testUtils.removeElement)(testElement1);
+	                (0, _testUtils.removeElement)(testElement2);
+	                (0, _testUtils.removeElement)(testElement3);
+	            });
 	        });
 	    });
+	}
+
+/***/ },
+/* 5 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.createTestElement = createTestElement;
+	exports.insertElement = insertElement;
+	exports.removeElement = removeElement;
+	function createTestElement() {
+	    var width = arguments.length <= 0 || arguments[0] === undefined ? "200px" : arguments[0];
+	    var height = arguments.length <= 1 || arguments[1] === undefined ? "200px" : arguments[1];
+
+	    var el = document.createElement("div");
+	    el.style.position = "absolute";
+	    el.style.width = width;
+	    el.style.height = height;
+	    return el;
+	}
+
+	function insertElement(el) {
+	    var top = arguments.length <= 1 || arguments[1] === undefined ? "0px" : arguments[1];
+	    var left = arguments.length <= 2 || arguments[2] === undefined ? "0px" : arguments[2];
+	    var parent = arguments.length <= 3 || arguments[3] === undefined ? document.body : arguments[3];
+
+	    el.style.top = top;
+	    el.style.left = left;
+	    parent.appendChild(el);
+	}
+
+	function removeElement(el) {
+	    el.parentNode.removeChild(el);
 	}
 
 /***/ }
