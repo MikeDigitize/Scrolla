@@ -1,16 +1,23 @@
-export function windowScroll(data) {
+export function windowScroll(start, stop, amount, scroll) {
     function scrollHere() {
-        yStart -=scrollAmount;
-        window.scrollTo(0, yStart);
+        start -=amount;
+        scroll(start);
     }
-    let { yStart, yStop, scrollAmount } = data;
     let timer = setInterval(() => {
-        if(scrollAmount > 0 && yStart <= yStop || scrollAmount < 0 && yStart >= yStop) {
+        if(amount > 0 && start <= stop || amount < 0 && start >= stop) {
             clearInterval(timer);
         }
         else {
-            requestAnimationFrame(scrollHere);
+            if(rafSupport()) {
+                requestAnimationFrame(scrollHere);
+            }
+            else {
+                scrollHere();
+            }
         }
     }, 5);
 }
 
+export function rafSupport() {
+    return window.requestAnimationFrame;
+}

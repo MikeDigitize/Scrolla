@@ -1,7 +1,8 @@
 import { Scrolla } from "./scrolla/scrolla";
-window.scroll = Scrolla(5);
+window.Scrolla = Scrolla;
 
 document.addEventListener("click", function(evt) {
-    scroll(evt.target);
+    let random = Math.floor(Math.random() * 20) + 1;
+    Scrolla(evt.target, random);
 });
 

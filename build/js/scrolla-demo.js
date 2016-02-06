@@ -48,10 +48,11 @@
 
 	var _scrolla = __webpack_require__(1);
 
-	window.scroll = (0, _scrolla.Scrolla)(5);
+	window.Scrolla = _scrolla.Scrolla;
 
 	document.addEventListener("click", function (evt) {
-	    scroll(evt.target);
+	    var random = Math.floor(Math.random() * 20) + 1;
+	    (0, _scrolla.Scrolla)(evt.target, random);
 	});
 
 /***/ },
@@ -64,26 +65,56 @@
 	    value: true
 	});
 	exports.Scrolla = Scrolla;
+	exports.getElementPosition = getElementPosition;
+	exports.getWindowPosition = getWindowPosition;
+	exports.getScrollAmount = getScrollAmount;
+	exports.scrollX = scrollX;
+	exports.scrollY = scrollY;
 
 	var _getPosition = __webpack_require__(2);
 
-	var _windowScroll = __webpack_require__(7);
+	var _windowScroll = __webpack_require__(3);
 
-	function Scrolla() {
-	    var scrollAmount = arguments.length <= 0 || arguments[0] === undefined ? 10 : arguments[0];
+	function Scrolla(selector) {
+	    var scrollAmount = arguments.length <= 1 || arguments[1] === undefined ? 10 : arguments[1];
 
-	    function getScrollAmount(_scrollAmount, yStart, yStop) {
-	        return yStop > yStart ? -Math.abs(_scrollAmount) : +Math.abs(_scrollAmount);
-	    }
+	    var _getWindowPosition = getWindowPosition();
 
-	    return function scroll(selector) {
-	        var updateScrollAmount = arguments.length <= 1 || arguments[1] === undefined ? scrollAmount : arguments[1];
+	    var winX = _getWindowPosition.winX;
+	    var winY = _getWindowPosition.winY;
 
-	        var yStop = (0, _getPosition.getPosition)(selector).top;
-	        var yStart = window.pageYOffset;
-	        scrollAmount = getScrollAmount(updateScrollAmount, yStart, yStop);
-	        (0, _windowScroll.windowScroll)({ yStart: yStart, yStop: yStop, scrollAmount: scrollAmount });
-	    };
+	    var _getElementPosition = getElementPosition(selector);
+
+	    var elX = _getElementPosition.elX;
+	    var elY = _getElementPosition.elY;
+
+	    (0, _windowScroll.windowScroll)(winX, elX, getScrollAmount(winX, elX, scrollAmount), scrollX);
+	    (0, _windowScroll.windowScroll)(winY, elY, getScrollAmount(winY, elY, scrollAmount), scrollY);
+	    return { startX: winX, stopX: elX, startY: winY, stopY: elY };
+	}
+
+	function getElementPosition(selector) {
+	    var elX = (0, _getPosition.getPosition)(selector).left;
+	    var elY = (0, _getPosition.getPosition)(selector).top;
+	    return { elX: elX, elY: elY };
+	}
+
+	function getWindowPosition() {
+	    var winX = window.pageXOffset;
+	    var winY = window.pageYOffset;
+	    return { winX: winX, winY: winY };
+	}
+
+	function getScrollAmount(start, stop, scrollAmount) {
+	    return stop > start ? -Math.abs(scrollAmount) : +Math.abs(scrollAmount);
+	}
+
+	function scrollX(start) {
+	    window.scrollTo(start, getWindowPosition().winY);
+	}
+
+	function scrollY(start) {
+	    window.scrollTo(getWindowPosition().winX, start);
 	}
 
 /***/ },
@@ -105,11 +136,7 @@
 	}
 
 /***/ },
-/* 3 */,
-/* 4 */,
-/* 5 */,
-/* 6 */,
-/* 7 */
+/* 3 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -118,22 +145,27 @@
 	    value: true
 	});
 	exports.windowScroll = windowScroll;
-	function windowScroll(data) {
+	exports.rafSupport = rafSupport;
+	function windowScroll(start, stop, amount, scroll) {
 	    function scrollHere() {
-	        yStart -= scrollAmount;
-	        window.scrollTo(0, yStart);
+	        start -= amount;
+	        scroll(start);
 	    }
-	    var yStart = data.yStart;
-	    var yStop = data.yStop;
-	    var scrollAmount = data.scrollAmount;
-
 	    var timer = setInterval(function () {
-	        if (scrollAmount > 0 && yStart <= yStop || scrollAmount < 0 && yStart >= yStop) {
+	        if (amount > 0 && start <= stop || amount < 0 && start >= stop) {
 	            clearInterval(timer);
 	        } else {
-	            requestAnimationFrame(scrollHere);
+	            if (rafSupport()) {
+	                requestAnimationFrame(scrollHere);
+	            } else {
+	                scrollHere();
+	            }
 	        }
 	    }, 5);
+	}
+
+	function rafSupport() {
+	    return window.requestAnimationFrame;
 	}
 
 /***/ }
