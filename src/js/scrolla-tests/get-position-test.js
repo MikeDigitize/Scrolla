@@ -1,4 +1,4 @@
-import { getPosition } from "../scrolla/get-position";
+import { getElementPosition } from "../scrolla/get-position";
 import { createTestElement, insertElement, removeElement } from "./test-utils";
 
 export function getPositionTests() {
@@ -13,11 +13,11 @@ export function getPositionTests() {
             });
             it("Element Y position is returned correctly", function() {
                 insertElement(testElement1, "300px");
-                expect(getPosition(testElement1).top).toBe(300);
+                expect(getElementPosition(testElement1).elY).toBe(300);
             });
             it("Element X position is returned correctly", function() {
                 insertElement(testElement1, 0, "400px");
-                expect(getPosition(testElement1).left).toBe(400);
+                expect(getElementPosition(testElement1).elX).toBe(400);
             });
             afterEach(function() {
                 removeElement(testElement1);
@@ -32,14 +32,14 @@ export function getPositionTests() {
             it("Element Y position is returned correctly", function() {
                 insertElement(testElement1, "300px");
                 insertElement(testElement2, "500px", 0, testElement1);
-                expect(getPosition(testElement1).top).toBe(300);
-                expect(getPosition(testElement2).top).toBe(800);
+                expect(getElementPosition(testElement1).elY).toBe(300);
+                expect(getElementPosition(testElement2).elY).toBe(800);
             });
             it("Element X position is returned correctly", function() {
                 insertElement(testElement1, 0, "300px");
                 insertElement(testElement2, 0, "500px", testElement1);
-                expect(getPosition(testElement1).left).toBe(300);
-                expect(getPosition(testElement2).left).toBe(800);
+                expect(getElementPosition(testElement1).elX).toBe(300);
+                expect(getElementPosition(testElement2).elX).toBe(800);
             });
             afterEach(function() {
                 removeElement(testElement1);
@@ -57,17 +57,17 @@ export function getPositionTests() {
                 insertElement(testElement1, "100px");
                 insertElement(testElement2, "800px", 0, testElement1);
                 insertElement(testElement3, "800px", 0, testElement2);
-                expect(getPosition(testElement1).top).toBe(100);
-                expect(getPosition(testElement2).top).toBe(900);
-                expect(getPosition(testElement3).top).toBe(1700);
+                expect(getElementPosition(testElement1).elY).toBe(100);
+                expect(getElementPosition(testElement2).elY).toBe(900);
+                expect(getElementPosition(testElement3).elY).toBe(1700);
             });
             it("Element X position is returned correctly", function() {
                 insertElement(testElement1, 0, "100px");
                 insertElement(testElement2, 0, "300px", testElement1);
                 insertElement(testElement3, 0, "400px", testElement2);
-                expect(getPosition(testElement1).left).toBe(100);
-                expect(getPosition(testElement2).left).toBe(400);
-                expect(getPosition(testElement3).left).toBe(800);
+                expect(getElementPosition(testElement1).elX).toBe(100);
+                expect(getElementPosition(testElement2).elX).toBe(400);
+                expect(getElementPosition(testElement3).elX).toBe(800);
             });
             afterEach(function() {
                 removeElement(testElement1);

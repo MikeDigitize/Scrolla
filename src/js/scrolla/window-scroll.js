@@ -4,7 +4,7 @@ export function windowScroll(start, stop, amount, scroll) {
         scroll(start);
     }
     let timer = setInterval(() => {
-        if(amount > 0 && start <= stop || amount < 0 && start >= stop) {
+        if(positionCheck(start, stop, amount)) {
             clearInterval(timer);
         }
         else {
@@ -20,4 +20,8 @@ export function windowScroll(start, stop, amount, scroll) {
 
 export function rafSupport() {
     return window.requestAnimationFrame;
+}
+
+export function positionCheck(start, stop, amount) {
+    return amount > 0 && start <= stop || amount < 0 && start >= stop;
 }
