@@ -1,4 +1,14 @@
-/******/ (function(modules) { // webpackBootstrap
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else {
+		var a = factory();
+		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
+	}
+})(this, function() {
+return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 
@@ -46,13 +56,12 @@
 
 	"use strict";
 
-	var _getPositionTest = __webpack_require__(4);
+	var _getPositionTest = __webpack_require__(3);
 
 	(0, _getPositionTest.getPositionTests)();
 
 /***/ },
-/* 1 */,
-/* 2 */
+/* 1 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -70,8 +79,8 @@
 	}
 
 /***/ },
-/* 3 */,
-/* 4 */
+/* 2 */,
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -81,9 +90,9 @@
 	});
 	exports.getPositionTests = getPositionTests;
 
-	var _getPosition = __webpack_require__(2);
+	var _getPosition = __webpack_require__(1);
 
-	var _testUtils = __webpack_require__(5);
+	var _testUtils = __webpack_require__(4);
 
 	function getPositionTests() {
 
@@ -163,7 +172,7 @@
 	}
 
 /***/ },
-/* 5 */
+/* 4 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -200,4 +209,6 @@
 	}
 
 /***/ }
-/******/ ]);
+/******/ ])
+});
+;

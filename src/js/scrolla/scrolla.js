@@ -5,8 +5,8 @@ export function Scrolla(selector, scrollAmount = 10) {
 
     let { winX, winY } = getWindowPosition();
     let { elX, elY } = getElementPosition(selector);
-    windowScroll(winX, elX, getScrollAmount(winX, elX, scrollAmount), scrollX);
-    windowScroll(winY, elY, getScrollAmount(winY, elY, scrollAmount), scrollY);
+    windowScroll(winX, elX, getScrollAmount(winX, elX, scrollAmount), scrolltoX);
+    windowScroll(winY, elY, getScrollAmount(winY, elY, scrollAmount), scrolltoY);
     return { startX : winX, stopX : elX, startY : winY, stopY : elY };
 
 }
@@ -27,10 +27,10 @@ export function getScrollAmount(start, stop, scrollAmount) {
     return stop > start ? -Math.abs(scrollAmount) : +Math.abs(scrollAmount);
 }
 
-export function scrollX(start) {
+export function scrolltoX(start) {
     window.scrollTo(start, getWindowPosition().winY);
 }
 
-export function scrollY(start) {
+export function scrolltoY(start) {
     window.scrollTo(getWindowPosition().winX, start);
 }
