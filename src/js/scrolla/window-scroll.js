@@ -1,21 +1,24 @@
 export function windowScroll(start, stop, amount, scroll) {
-    function scrollHere() {
-        start -=amount;
-        scroll(start);
-    }
-    let timer = setInterval(() => {
-        if(positionCheck(start, stop, amount)) {
-            clearInterval(timer);
+    return new Promise(function (resolve) {
+        function scrollHere() {
+            start -=amount;
+            scroll(start);
         }
-        else {
-            if(rafSupport()) {
-                requestAnimationFrame(scrollHere);
+        let timer = setInterval(() => {
+            if(positionCheck(start, stop, amount)) {
+                clearInterval(timer);
+                resolve();
             }
             else {
-                scrollHere();
+                if(rafSupport()) {
+                    requestAnimationFrame(scrollHere);
+                }
+                else {
+                    scrollHere();
+                }
             }
-        }
-    }, 5);
+        }, 5);
+    });
 }
 
 export function rafSupport() {

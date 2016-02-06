@@ -1,31 +1,33 @@
 export function getElementPosition(selector) {
 
-    let elX = getPosition(selector).left;
-    let elY = getPosition(selector).top;
+    let element = getElement(selector);
+    let elX = getPositionToWindow(element).left;
+    let elY = getPositionToWindow(element).top;
 
     return { elX, elY };
 
 }
 
-export function getPosition(el) {
+export function getElement(element) {
+    return element instanceof HTMLElement ? element : document.querySelector(element);
+}
 
-    let element = getElement(el);
-    let { top, left } = getPositionToWindow(el);
+export function getPositionToWindow(element) {
+
+    let pos = element.getBoundingClientRect();
+    let winPos = getWindowPosition();
+    let top = pos.top + winPos.winY;
+    let left = pos.left + winPos.winX;
 
     return { top, left };
 
 }
 
-export function getElement(el) {
-    return el instanceof HTMLElement ? el : document.querySelector(el);
-}
+export function getWindowPosition() {
 
-export function getPositionToWindow(el) {
+    let winX = window.scrollX || window.pageXOffset;
+    let winY = window.scrollY || window.pageYOffset;
 
-    let pos = el.getBoundingClientRect(),
-        top = pos.top + (window.scrollY || window.pageYOffset),
-        left = pos.left + (window.scrollX || window.pageXOffset);
-
-    return { top, left };
+    return { winX, winY };
 
 }
