@@ -53,12 +53,12 @@ Scrolla({ y : 30 }, 5);
 Scrolla returns a promise for each X and Y window animation, accessible through the scrollY and scrollX properties.
 
 ```javascript
-Scrolla(document.querySelector("#targetEl")).scrollY.then(function() {
+Scrolla("#targetEl").scrollY.then(function() {
   // do something when the Y scroll animation ends
 });
 
 // to react to both x and y animation ends
-let scroll = Scrolla(document.querySelector("#targetEl"));
+let scroll = Scrolla("#targetEl");
 scroll.scrollX.then(function() {
   // do something when the X scroll animation ends
 });
