@@ -28,7 +28,7 @@ var Scrolla = require("js/Scrolla.js");
 ### Usage
 Scrolla is a function you can call to scroll to somewhere on the page. Where on the page depends on what you pass in. You can either pass as a first argument:
 
-* A CSS selector or HTMLElement. Scrolla will scroll to its top and left CSS properties.
+* A CSS selector or HTMLElement. Scrolla will scroll to its top and left positional properties.
 * An object with an x and / or y property to scroll to.
 
 As a second argument you can pass in the speed at which the scroll occurs. This is an optional argument and defaults to 10. A number between 1 and 20 is recommended, with 1 being super slow and 20 being super fast.
