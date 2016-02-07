@@ -1,8 +1,5 @@
 ## Scrolla
-A Promise based utility tool that scrolls to where you tell it to on the page.
-
-## Scrolla Sequence
-Scrolla but with an additional generator based scroll sequencer.
+Scrool is a Promise based utility tool that scrolls to where you tell it to on the page. Scrolla-sequence is Scrolla but with an additional generator based scroll sequencer.
 
 ### Compatibility
 IE9+.
