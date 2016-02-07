@@ -5,8 +5,22 @@ export function windowScroll(start, stop, amount, scroll) {
     return new Promise((resolve, reject) => {
 
         function scrollHere() {
-            start -=amount;
+
+            let scrollAmount = amount;
+            if(scrollAmount < 0) {
+                if(stop - start < Math.abs(scrollAmount)) {
+                    scrollAmount = -(stop - start);
+                }
+            }
+            else {
+                if(start - stop < Math.abs(scrollAmount)) {
+                    scrollAmount = start - stop;
+                }
+            }
+
+            start -= scrollAmount;
             scroll(start);
+
         }
 
         var timer = setInterval(() => {
