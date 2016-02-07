@@ -83,12 +83,12 @@ var sequence = Scrolla.sequence([
 ]);
 
 ```
-The sequence method is a generator that returns an iterator. The iterator returns an object after each use with a <code>value</code> property that holds an object with the <code>scrollX</code> and <code>scrollY</code> promises and a <code>done</code> property to indicate whether the sequence has finished. Calling next on the iterator will run the next animation. The iterator accepts a cancel argument. If passed a value of true it will cancel the sequence.
+The sequence method is a generator that returns an iterator. The iterator returns an object after each use with a <code>value</code> property that holds an object with the <code>scrollX</code> and <code>scrollY</code> promises and a <code>done</code> property to indicate whether the sequence has finished. Calling next on the iterator will run the next animation. The iterator accepts an argument (false) to cancel the sequence.
 
 ```javascript
 // from the above
 sequence.next();  // runs the next scroll animation
-sequence.next(true);  // cancel the sequence
+sequence.next(false);  // cancel the sequence
 
 ```
 
@@ -96,31 +96,17 @@ The below is a simple example showing how to run an automatic sequence of scroll
 
 ```javascript
 function run() {
-    // set a timeout of 800ms after both x and y scrolls have completed
-    function allow() {
-        if(x && y) {
-            setTimeout(function() {
-                run();
-            }, 800);
-        }
-    }
-    
     // trigger next scroll animation
     let scroll = sequence.next();
-    let { x, y } = false;
     
     // done will be false until all animations have completed
     if(!scroll.done) {
-        scroll.value.scrollY.then(function() {
-            console.log("Y scroll finished");
-            y = true;
-            allow();
-        });
-        scroll.value.scrollX.then(function() {
-            console.log("X scroll finished");
-            x = true;
-            allow();
-        });
+        Promise.all([scroll.value.scrollY, scroll.value.scrollX])
+            .then(function() {
+                setTimeout(function() {
+                    run();
+                }, 800);
+          });
     }
     else {
         console.log("all animations completed");
