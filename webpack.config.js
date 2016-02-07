@@ -6,7 +6,8 @@ module.exports = {
     entry : {
         "scrolla-demo" : "js/scrolla-demo.js",
         "scrolla-test-suite" : "js/scrolla-test-suite.js",
-        "Scrolla" : "js/scrolla/scrolla.js"
+        "Scrolla" : "js/scrolla/scrolla.js",
+        "Scrolla-sequence" : "js/scrolla/scrolla-sequence.js"
     },
     resolve: {
         root: path.resolve(__dirname + "/src"),

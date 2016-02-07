@@ -24,3 +24,43 @@ document.addEventListener("click", function(evt) {
     });
 
 });
+
+if(Scrolla.sequence) {
+    var sequence = Scrolla.sequence([
+        document.querySelector(".container"),
+        { x : 1000 },
+        { y : 500, x : 0 },
+        function() {
+            var h1s = document.querySelectorAll("h1");
+            var random = Math.floor(Math.random() * h1s.length);
+            return h1s[random];
+        }
+    ]);
+
+    window.run = function() {
+        function allow() {
+            if(x && y) {
+                setTimeout(function() {
+                    run();
+                }, 800);
+            }
+        }
+        let scroll = sequence.next();
+        let { x, y } = false;
+        if(!scroll.done) {
+            scroll.value.scrollY.then(function() {
+                console.log("Y finished");
+                y = true;
+                allow();
+            });
+            scroll.value.scrollX.then(function() {
+                console.log("X finished");
+                x = true;
+                allow();
+            });
+        }
+        else {
+            console.log("done!!");
+        }
+    };
+}
