@@ -37,7 +37,7 @@ document.addEventListener("click", function(evt) {
 });
 
 // with a scroll speed 
-Scrolla(evt.target, 1);
+Scrolla("#targetEl", 1);
 
 // scroll to specific x and y properties
 Scrolla({ x : 1000, y : 600 }); // include x or y or both
