@@ -2,16 +2,18 @@ import { Promise } from "es6-promise";
 
 export function windowScroll(start, stop, amount, scroll) {
 
-    return new Promise(function (resolve) {
+    return new Promise((resolve, reject) => {
 
         function scrollHere() {
             start -=amount;
             scroll(start);
         }
 
-        let timer = setInterval(() => {
+        var timer = setInterval(() => {
             if(positionCheck(start, stop, amount)) {
                 clearInterval(timer);
+                this.isScrolling = false;
+                this.reject = function(){};
                 resolve();
             }
             else {
@@ -23,6 +25,11 @@ export function windowScroll(start, stop, amount, scroll) {
                 }
             }
         }, 5);
+
+        this.reject = function() {
+            reject();
+            clearInterval(timer);
+        }
 
     });
 

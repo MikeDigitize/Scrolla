@@ -26,6 +26,7 @@ document.addEventListener("click", function(evt) {
 });
 
 if(Scrolla.sequence) {
+
     var sequence = Scrolla.sequence([
         ".container",
         { x : 1000 },
@@ -63,4 +64,5 @@ if(Scrolla.sequence) {
             console.log("done!!");
         }
     };
+
 }
