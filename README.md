@@ -1,5 +1,8 @@
 ## Scrolla
-Promise based utility tool that scrolls to where you tell it to on the page.
+A Promise based utility tool that scrolls to where you tell it to on the page.
+
+## Scrolla Sequence
+Scrolla but with an additional generator based scroll sequencer.
 
 ### Compatibility
 IE9+.
@@ -9,6 +12,8 @@ Include it as a script
 
 ```html
 <script src="js/Scrolla.js"></script>
+<!-- or -->
+<script src="js/Scrolla-sequence.js"></script>
 
 ```
 
@@ -16,10 +21,10 @@ or require / import it.
 
 ```javascript
 // ES2016
-import { Scrolla } from "js/Scrolla";
+import { Scrolla } from "js/Scrolla.js";
 
 // Node / CommonJs
-var Scrolla = require("js/Scrolla");
+var Scrolla = require("js/Scrolla.js");
 
 ```
 
@@ -66,7 +71,73 @@ scroll.scrollY.then(function() {
 
 ```
 
-That's all there is to it.
+That's all there is to Scrolla.
+
+### Sequencer
+
+Scrolla sequence is Scrolla but with the ability to sequence scroll animations together. The sequence method is a static property on the Scrolla function and accepts an array of targets to scroll to, either as selectors, HTMLElements or objects with x and y properties as mentioned above, and also a function that returns a scroll target.
+
+```javascript
+// pass in a scroll targets in a variety of ways
+var sequence = Scrolla.sequence([
+  ".container",
+  { x : 1000 },
+  { y : 500, x : 0 },
+  function() {
+      var h1s = document.querySelectorAll("h1");
+      var random = Math.floor(Math.random() * h1s.length);
+      return h1s[random];
+  }
+]);
+
+```
+The sequence method is a generator that returns an iterator. The iterators returns an object after each use that has a value property which holds an object with the scrollX and scrollY promises and a done property to indicate whether the sequence has finished. Calling next on the iterator will run the next animation. The iterator accepts a cancel argument. If passed a value of true it will cancel the sequence.
+
+```javascript
+// from the above
+sequence.next();  // runs the next scroll animation
+sequence.next(true);  // cancel the sequence
+
+```
+
+The below is a simple example showing how to run an automatic sequence of scroll animations (using the scroll targets declared above) using setTimeout to create a gap between each.
+
+```javascript
+function run() {
+    // set a timeout of 800ms after both x and y scrolls have completed
+    function allow() {
+        if(x && y) {
+            setTimeout(function() {
+                run();
+            }, 800);
+        }
+    }
+    
+    // trigger next scroll animation
+    let scroll = sequence.next();
+    let { x, y } = false;
+    
+    // done will be false until all animations have completed
+    if(!scroll.done) {
+        scroll.value.scrollY.then(function() {
+            console.log("Y scroll finished");
+            y = true;
+            allow();
+        });
+        scroll.value.scrollX.then(function() {
+            console.log("X scroll finished");
+            x = true;
+            allow();
+        });
+    }
+    else {
+        console.log("all animations completed");
+    }
+}
+
+```
+
+The caveat is that the Scrolla-sequence script is considerably larger than the standard Scrolla file, as it needs the polyfill for ES6 generators.
 
 ### Licence
 
