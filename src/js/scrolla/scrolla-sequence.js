@@ -63,7 +63,7 @@ Scrolla.sequence = function* (sequence, scrollAmount = 10) {
 
         let scrollAction = typeof sequence[count] === "function" ? sequence[count]() : sequence[count];
         let cancel = yield Scrolla(scrollAction, scrollAmount);
-        if(cancel) {
+        if(cancel === false) {
             count = amount
         }
         else {

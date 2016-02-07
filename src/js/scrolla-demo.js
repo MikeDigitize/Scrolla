@@ -39,30 +39,21 @@ if(Scrolla.sequence) {
     ]);
 
     window.run = function() {
-        function allow() {
-            if(x && y) {
-                setTimeout(function() {
-                    run();
-                }, 800);
-            }
-        }
+
         let scroll = sequence.next();
-        let { x, y } = false;
+
         if(!scroll.done) {
-            scroll.value.scrollY.then(function() {
-                console.log("Y finished");
-                y = true;
-                allow();
-            });
-            scroll.value.scrollX.then(function() {
-                console.log("X finished");
-                x = true;
-                allow();
-            });
+            Promise.all([scroll.value.scrollY, scroll.value.scrollX])
+                .then(function() {
+                    setTimeout(function() {
+                        run();
+                    }, 800);
+                });
         }
         else {
-            console.log("done!!");
+            console.log("all animations completed");
         }
-    };
+
+    }
 
 }
