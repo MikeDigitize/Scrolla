@@ -67,7 +67,7 @@ Promise.all([scroll.scrollX, scroll.scrollY]).then(function() {
 
 ### Sequencer
 
-Scrolla sequence is Scrolla but with the ability to sequence scroll animations together. The sequence method is a static property on the Scrolla function and accepts an array of targets to scroll to, either as selectors, HTMLElements or objects with x and y properties as mentioned above, and additionally a function that returns a scroll target.
+Scrolla sequence is Scrolla but with the ability to sequence scroll animations together. The sequence method is a static property on the Scrolla function and accepts an array of targets to scroll to, either as selectors, HTMLElements or objects with x and y properties as mentioned above, and additionally a function that returns a scroll target. Plus it takes an optional second argument, like Scrolla, to set the scroll speed.
 
 ```javascript
 // pass in scroll targets in a variety of ways
@@ -80,7 +80,7 @@ var sequence = Scrolla.sequence([
       var random = Math.floor(Math.random() * h1s.length);
       return h1s[random];
   }
-]);
+], 5);
 
 ```
 The sequence method is a generator that returns an iterator. The iterator returns an object after each use with a <code>value</code> property that holds an object with the <code>scrollX</code> and <code>scrollY</code> promises and a <code>done</code> property to indicate whether the sequence has finished. Calling next on the iterator will run the next animation. The iterator accepts an argument (false) to cancel the sequence.
