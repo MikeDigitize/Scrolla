@@ -27,7 +27,7 @@ document.addEventListener("click", function(evt) {
 
 if(Scrolla.sequence) {
     var sequence = Scrolla.sequence([
-        document.querySelector(".container"),
+        ".container",
         { x : 1000 },
         { y : 500, x : 0 },
         function() {

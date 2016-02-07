@@ -32,10 +32,6 @@ export function rafSupport() {
     return window.requestAnimationFrame;
 }
 
-export function promiseSupport() {
-    return window.Promise ? window.Promise : Promise.Promise;
-}
-
 export function positionCheck(start, stop, amount) {
     return amount > 0 && start <= stop || amount < 0 && start >= stop;
 }
