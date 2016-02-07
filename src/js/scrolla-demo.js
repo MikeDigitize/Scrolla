@@ -8,19 +8,19 @@ document.addEventListener("click", function(evt) {
     let scroll;
 
     if(random === 0) {
-        console.log("scroll by config", random);
+        console.log("scroll by config", "x:", randomX, "y:", randomY);
         scroll = Scrolla(config, randomAmount);
     }
     else {
-        console.log("scroll by click target", random);
+        console.log("scroll by click target", evt.target);
         scroll = Scrolla(evt.target, randomAmount);
     }
 
     scroll.scrollX.then(function() {
-        console.log("done x", randomX);
+        console.log("finished x scroll");
     });
     scroll.scrollY.then(function() {
-        console.log("done y", randomY);
+        console.log("finished y scroll");
     });
 
 });

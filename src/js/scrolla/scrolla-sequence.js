@@ -19,7 +19,10 @@ export function Scrolla(selector, scrollAmount = 10) {
     }
 
     if(typeof selector !== "string" && !(selector instanceof HTMLElement)) {
-        return scroll(selector.x || getWindowPosition().winX, selector.y || getWindowPosition().winY);
+        let { x, y } = selector;
+        x = typeof x === "undefined" ? getWindowPosition().winX : x;
+        y = typeof y === "undefined" ? getWindowPosition().winY : y;
+        return scroll(x, y);
     }
     else {
         let { elX, elY } = getElementPosition(selector);
@@ -28,12 +31,12 @@ export function Scrolla(selector, scrollAmount = 10) {
 
 }
 
-Scrolla.sequence = function* (sequence) {
+Scrolla.sequence = function* (sequence, scrollAmount = 10) {
     let amount = sequence.length;
     let count = 0;
     while(count < amount) {
         let scrollAction = typeof sequence[count] === "function" ? sequence[count]() : sequence[count];
-        let cancel = yield Scrolla(scrollAction);
+        let cancel = yield Scrolla(scrollAction, scrollAmount);
         if(cancel) {
             count = amount
         }

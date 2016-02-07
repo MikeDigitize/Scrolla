@@ -18,7 +18,10 @@ export function Scrolla(selector, scrollAmount = 10) {
     }
 
     if(typeof selector !== "string" && !(selector instanceof HTMLElement)) {
-        return scroll(selector.x || getWindowPosition().winX, selector.y || getWindowPosition().winY);
+        let { x, y } = selector;
+        x = typeof x === "undefined" ? getWindowPosition().winX : x;
+        y = typeof y === "undefined" ? getWindowPosition().winY : y;
+        return scroll(x, y);
     }
     else {
         let { elX, elY } = getElementPosition(selector);
