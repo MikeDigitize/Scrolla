@@ -88,7 +88,7 @@ var sequence = Scrolla.sequence([
 ]);
 
 ```
-The sequence method is a generator that returns an iterator. The iterators returns an object after each use that has a value property which holds an object with the scrollX and scrollY promises and a done property to indicate whether the sequence has finished. Calling next on the iterator will run the next animation. The iterator accepts a cancel argument. If passed a value of true it will cancel the sequence.
+The sequence method is a generator that returns an iterator. The iterator returns an object after each use that has a value property which holds an object with the scrollX and scrollY promises and a done property to indicate whether the sequence has finished. Calling next on the iterator will run the next animation. The iterator accepts a cancel argument. If passed a value of true it will cancel the sequence.
 
 ```javascript
 // from the above
