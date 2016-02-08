@@ -1,13 +1,15 @@
-import { getElementPosition } from "../scrolla/get-utils";
+import { getElementPosition, getElement, getPositionToWindow } from "../scrolla/get-utils";
+import { getScrollAmount, scrolltoX, scrolltoY } from "../scrolla/scroll-utils";
+
 import { createTestElement, insertElement, removeElement } from "./test-utils";
 
 export function getPositionTests() {
 
-    describe("Get Position function tests", function() {
+    describe("Get element position tests", function() {
 
         var testElement1, testElement2, testElement3;
 
-        describe("Un-nested element positions return correctly", function() {
+        describe("1. Un-nested element positions return correctly", function() {
 
             beforeEach(function() {
                 testElement1  = createTestElement();
@@ -29,7 +31,7 @@ export function getPositionTests() {
 
         });
 
-        describe("Nested element positions return correctly", function () {
+        describe("2. Nested element positions return correctly", function () {
 
             beforeEach(function() {
                 testElement1  = createTestElement("500px", "1500px");
@@ -57,7 +59,7 @@ export function getPositionTests() {
 
         });
 
-        describe("Deep nested element positions return correctly", function () {
+        describe("3. Deep nested element positions return correctly", function () {
 
             beforeEach(function() {
                 testElement1  = createTestElement("1000px", "2500px");
@@ -92,4 +94,32 @@ export function getPositionTests() {
         });
 
     });
+
+	describe("Get element tests", function() {
+
+		describe("1. An element is always returned", function() {
+
+			var testElement1;
+
+			it("Returns an element from a selector", function() {
+				testElement1  = createTestElement();
+				testElement1.id = "testEl";
+				insertElement(testElement1);
+				expect(getElement("#testEl") instanceof HTMLElement).toBe(true);
+			});
+
+			it("Returns an element from an element", function() {
+				testElement1  = createTestElement();
+				insertElement(testElement1);
+				expect(getElement(testElement1) instanceof HTMLElement).toBe(true);
+			});
+
+			afterEach(function() {
+				removeElement(testElement1);
+			});
+
+		});
+
+	});
+
 }
