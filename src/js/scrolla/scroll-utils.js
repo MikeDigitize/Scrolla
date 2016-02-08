@@ -1,4 +1,4 @@
-import { getWindowPosition } from "./get-position";
+import { getWindowPosition } from "./get-utils";
 
 export function getScrollAmount(start, stop, scrollAmount) {
     return stop > start ? -Math.abs(scrollAmount) : +Math.abs(scrollAmount);

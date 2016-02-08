@@ -1,6 +1,6 @@
 import { windowScroll } from "../scrolla/window-scroll";
-import { getWindowPosition } from "../scrolla/get-position";
-import { getScrollAmount } from "../scrolla/scroll-amount";
+import { getWindowPosition } from "../scrolla/get-utils";
+import { getScrollAmount, scrolltoX, scrolltoY } from "../scrolla/scroll-utils";
 
 export function windowScrollTests() {
 
@@ -14,7 +14,7 @@ export function windowScrollTests() {
 					window.scrollTo(0, 0);
 
 					windowScroll.call({}, 0, 1000, getScrollAmount(0, 1000, 10), function(scrollHere) {
-						window.scrollTo(getWindowPosition().winX, scrollHere);
+						scrolltoY(scrollHere);
 					}).then(function() {
 						done();
 					});
@@ -40,9 +40,8 @@ export function windowScrollTests() {
 					window.scrollTo(0, 0);
 
 					windowScroll.call({}, 0, 1250, getScrollAmount(0, 1250, 10), function(scrollHere) {
-						window.scrollTo(scrollHere, getWindowPosition().winY);
+						scrolltoX(scrollHere)
 					}).then(function() {
-						console.log(getWindowPosition());
 						done();
 					});
 
@@ -67,7 +66,7 @@ export function windowScrollTests() {
 					window.scrollTo(0, 2500);
 
 					windowScroll.call({}, 2500, 1000, getScrollAmount(2500, 1000, 10), function(scrollHere) {
-						window.scrollTo(getWindowPosition().winX, scrollHere);
+						scrolltoY(scrollHere);
 					}).then(function() {
 						done();
 					});
@@ -83,7 +82,7 @@ export function windowScrollTests() {
 					document.body.style.height = "auto";
 					window.scrollTo(0,0);
 				});
-				
+
 			});
 
 			describe("4. Horizontal scroll left tests", function () {
@@ -94,9 +93,8 @@ export function windowScrollTests() {
 					window.scrollTo(2500, 0);
 
 					windowScroll.call({}, 2500, 1250, getScrollAmount(2500, 1250, 10), function(scrollHere) {
-						window.scrollTo(scrollHere, getWindowPosition().winY);
+						scrolltoX(scrollHere);
 					}).then(function() {
-						console.log(getWindowPosition());
 						done();
 					});
 

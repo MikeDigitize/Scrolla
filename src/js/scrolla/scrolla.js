@@ -1,5 +1,5 @@
-import { getElementPosition, getWindowPosition } from "./get-position";
-import { getScrollAmount, scrolltoX, scrolltoY } from "./scroll-amount";
+import { getElementPosition, getWindowPosition } from "./get-utils";
+import { getScrollAmount, scrolltoX, scrolltoY } from "./scroll-utils";
 import { windowScroll } from "./window-scroll";
 
 export function Scrolla(selector, scrollAmount = 10) {
