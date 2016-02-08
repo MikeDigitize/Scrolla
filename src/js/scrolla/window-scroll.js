@@ -5,22 +5,8 @@ export function windowScroll(start, stop, amount, scroll) {
     return new Promise((resolve, reject) => {
 
         function scrollHere() {
-
-            let scrollAmount = amount;
-            if(scrollAmount < 0) {
-                if(stop - start < Math.abs(scrollAmount)) {
-                    scrollAmount = -(stop - start);
-                }
-            }
-            else {
-                if(start - stop < Math.abs(scrollAmount)) {
-                    scrollAmount = start - stop;
-                }
-            }
-
-            start -= scrollAmount;
+            start -= calculateScrollAmount(start, stop, amount);
             scroll(start);
-
         }
 
         var timer = setInterval(() => {
@@ -55,4 +41,22 @@ export function rafSupport() {
 
 export function positionCheck(start, stop, amount) {
     return amount > 0 && start <= stop || amount < 0 && start >= stop;
+}
+
+export function calculateScrollAmount(start, stop, amount) {
+
+	let scrollAmount = amount;
+	if(scrollAmount < 0) {
+		if(stop - start < Math.abs(scrollAmount)) {
+			scrollAmount = -(stop - start);
+		}
+	}
+	else {
+		if(start - stop < Math.abs(scrollAmount)) {
+			scrollAmount = start - stop;
+		}
+	}
+
+	return scrollAmount;
+
 }
